@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "71670415294",
+    "project_id": "dental-clinic-app-1032a",
+    "storage_bucket": "dental-clinic-app-1032a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71670415294:android:66c08cc5b91e3ed58583ef",
+        "android_client_info": {
+          "package_name": "com.eraasoft.dental_clinic_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjLifEM7-IL16uDVbWVSTMA-pqcb66IC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
