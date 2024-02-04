@@ -26,3 +26,20 @@ class GetPatientSuccessState extends PatientState{}
 
 class GetPatientErrorState extends PatientState{}
 
+class SavePatientLoadingState extends PatientState{}
+
+class SavePatientSuccessState extends PatientState{}
+
+class SavePatientErrorState extends PatientState{}
+
+class UpdatePatientLoadingState extends PatientState{}
+
+class UpdatePatientSuccessState extends PatientState{}
+
+class UpdatePatientErrorState extends PatientState{}
+
+class DeletePatientLoadingState extends PatientState{}
+
+class DeletePatientSuccessState extends PatientState{}
+
+class DeletePatientErrorState extends PatientState{}

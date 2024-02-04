@@ -1,4 +1,4 @@
-import 'package:dental_clinic_app/view/screens/login_screen.dart';
+import 'package:dental_clinic_app/view/screens/search_patient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../view_model/bloc/auth_cubit/auth_cubit.dart';
@@ -8,8 +8,8 @@ import '../components/custom_button.dart';
 import '../components/custom_text.dart';
 import 'package:flutter/services.dart';
 
-import 'add_patient_screen.dart';
-import 'booking_screen.dart';
+
+import 'show_patients_screen.dart';
 
 class ChooseScreen extends StatelessWidget {
   const ChooseScreen({super.key});
@@ -69,19 +69,19 @@ class ChooseScreen extends StatelessWidget {
                     height: 170,
                   ),
                   CustomButton(
-                    text: 'Add New Patient',
+                    text: ' Patients ',
                     textColor:  AppColors.background3,
                     backgroundColor: AppColors.background4,
                     onPressed: () {
-                      Navigation.push(context, AddPatientScreen());
+                      Navigation.push(context, const ShowPatientsScreen());
                     },
                   ),
                   CustomButton(
-                    text: 'Appointment Booking',
+                    text: ' Bookings ',
                     textColor:  AppColors.background3,
                     backgroundColor: AppColors.background4,
                     onPressed: () {
-                      Navigation.push(context, BookingScreen());
+                      Navigation.push(context, const SearchPatientScreen());
                     },
                   ),
                 ],

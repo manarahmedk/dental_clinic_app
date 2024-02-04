@@ -6,8 +6,10 @@ import '../../view_model/utils/functions.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text_form_field.dart';
 
-class AddPatientScreen extends StatelessWidget {
-  const AddPatientScreen({super.key});
+
+class EditPatientScreen extends StatelessWidget {
+
+  const EditPatientScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class AddPatientScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Form(
-            key: cubit.formKey2,
+            key: cubit.formKey3,
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
@@ -47,7 +49,7 @@ class AddPatientScreen extends StatelessWidget {
                   CustomTextFormField(
                     hintText: 'Name',
                     keyboardType: TextInputType.text,
-                    controller: cubit.nameController,
+                    controller: cubit.editNameController,
                     suffixIcon: Icons.title,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
@@ -63,7 +65,7 @@ class AddPatientScreen extends StatelessWidget {
                   CustomTextFormField(
                     hintText: 'Age',
                     keyboardType: TextInputType.text,
-                    controller: cubit.ageController,
+                    controller: cubit.editAgeController,
                     textInputAction: TextInputAction.next,
                     suffixIcon: Icons.person,
                     validator: (value) {
@@ -79,13 +81,13 @@ class AddPatientScreen extends StatelessWidget {
                   CustomTextFormField(
                     hintText: 'Phone Number',
                     keyboardType: TextInputType.text,
-                    controller: cubit.phoneNumberController,
+                    controller: cubit.editPhoneNumberController,
                     textInputAction: TextInputAction.next,
                     suffixIcon: Icons.phone,
                     isPasswordText: false,
                     validator: (value) {
                       if ((value ?? '').isEmpty) {
-                        return 'Please, Enter phone number ';
+                        return 'Please, Enter phone number';
                       }
                       return null;
                     },
@@ -96,21 +98,39 @@ class AddPatientScreen extends StatelessWidget {
                   BlocConsumer<PatientCubit, PatientState>(
                     listener: (context, state) {},
                     builder: (context, state) {
-                      return CustomButton(
-                        text: 'Add New Patient',
-                        textColor: AppColors.background3,
-                        backgroundColor: AppColors.background4,
-                        onPressed: () {
-                          if (cubit.formKey2.currentState!.validate()) {
-                            cubit.formKey2.currentState!.save();
-                            cubit.addPatientFireStore().then((value) {
-                              Navigator.pop(context);
-                              Functions.showToast(
-                                message: "Added Successfully",
-                              );
-                            });
-                          }
-                        },
+                      return Column(
+                        children: [
+                          CustomButton(
+                            text: 'Update Patient',
+                            textColor: AppColors.background3,
+                            backgroundColor: AppColors.background4,
+                            onPressed: () {
+                              if (cubit.formKey3.currentState!.validate()) {
+                                cubit.formKey3.currentState!.save();
+                                cubit.updatePatient().then((value) {
+                                  Navigator.pop(context);
+                                  Functions.showToast(
+                                      message: "Updated Successfully");
+                                });
+                              }
+                            },
+                          ),
+                          CustomButton(
+                            text: 'Delete Patient',
+                            textColor: AppColors.background3,
+                            backgroundColor: AppColors.background4,
+                            onPressed: () {
+                              if (cubit.formKey3.currentState!.validate()) {
+                                cubit.formKey3.currentState!.save();
+                                cubit.deletePatient().then((value) {
+                                  Navigator.pop(context);
+                                  Functions.showToast(
+                                      message: "Deleted Successfully");
+                                });
+                              }
+                            },
+                          ),
+                        ],
                       );
                     },
                   ),

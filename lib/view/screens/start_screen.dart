@@ -22,7 +22,6 @@ class StartScreen extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    var cubit = AuthCubit.get(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -94,7 +93,7 @@ class StartScreen extends StatelessWidget {
                         child: const CustomText(
                           text: 'Admin Login',
                           fontSize: 17,
-                          color: Color(0xffC7EDE6),
+                          color: AppColors.background4,
                         ),
                       ),
                     ],

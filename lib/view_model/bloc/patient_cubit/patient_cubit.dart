@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dental_clinic_app/view_model/bloc/booking_cubit/booking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import '../../../model/patient_model.dart';
 import '../../data/firebase/firebase.dart';
 import '../../data/local/shared_keys.dart';
@@ -19,6 +18,7 @@ class PatientCubit extends Cubit<PatientState> {
   PatientModel? currentPatient;
 
   GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey3 = GlobalKey<FormState>();
 
   int currentIndex = 0;
 
@@ -33,7 +33,7 @@ class PatientCubit extends Cubit<PatientState> {
 
   void changeIndex(int index) {
     currentIndex = index;
-    //setDataFromFirebaseToControllers();
+    setDataFromFirebaseToControllers();
   }
 
 
@@ -69,7 +69,6 @@ class PatientCubit extends Cubit<PatientState> {
     emit(GetAllPatientsLoadingState());
     FirebaseFirestore.instance
         .collection(FirebaseKeys.patients)
-        .where('user_id', isEqualTo: LocalData.get(key: SharedKeys.uid))
         .snapshots()
         .listen((value) {
       patients.clear();
@@ -84,16 +83,50 @@ class PatientCubit extends Cubit<PatientState> {
     });
   }
 
-  Future<void> getTaskFromFireStore() async {
+  Future<void> searchPatientFromFireStore(String data) async {
+    emit(GetPatientLoadingState());
+    await  FirebaseFirestore.instance
+        .collection(FirebaseKeys.patients)
+    .where('name',isGreaterThanOrEqualTo: data)
+    .where('name',isLessThan: data+'z')
+    .snapshots().listen((value) {
+      patients.clear();
+      for (var i in value.docs) {
+        patients.add(PatientModel.fromJson(i.data(), id: i.reference));
+      }
+      setDataFromFirebaseToControllers();
+      emit(GetPatientSuccessState());
+    },onError: (error) {
+      print(error);
+      emit(GetPatientErrorState());
+      throw error;
+    });
+  }
+
+  Future<void> getPatientDataFromFireStore() async {
     emit(GetPatientLoadingState());
     await patients[currentIndex].id?.get().then((value) {
       currentPatient = PatientModel.fromJson(value.data() as Map<String, dynamic>,
           id: value.reference);
       setDataFromFirebaseToControllers();
       emit(GetPatientSuccessState());
-    }).catchError((error) {
+    },onError: (error) {
       print(error);
       emit(GetPatientErrorState());
+      throw error;
+    });
+  }
+
+  Future<void> savePatientDataFromFireStore() async {
+    emit(SavePatientLoadingState());
+    await patients[currentIndex].id?.get().then((value) {
+      currentPatient = PatientModel.fromJson(value.data() as Map<String, dynamic>,
+          id: value.reference);
+      saveData();
+      emit(SavePatientSuccessState());
+    },onError: (error) {
+      print(error);
+      emit(SavePatientErrorState());
       throw error;
     });
   }
@@ -110,29 +143,34 @@ class PatientCubit extends Cubit<PatientState> {
     currentPatient?.phoneNumber = editPhoneNumberController.text;
   }
 
-  // Future<void> updateTaskFire() async {
-  //   emit(UpdateTaskLoadingState());
-  //   setDataFromControllersToFireStore();
-  //   await currentTask?.id?.update(currentTask?.toJson() ?? {}).then((value) {
-  //     emit(UpdateTaskSuccessState());
-  //     getAllTasksFromFireStore();
-  //   }).catchError((error) {
-  //     print(error);
-  //     emit(UpdateTaskSuccessState());
-  //     throw error;
-  //   });
-  // }
+  void saveData() {
+    LocalData.set(key: SharedKeys.name, value: currentPatient?.name! ?? "");
+    LocalData.set(key: SharedKeys.phoneNumber, value: currentPatient?.phoneNumber! ?? "");
+  }
 
-  // Future<void> deleteTaskFire() async {
-  //   emit(DeleteTaskLoadingState());
-  //   await currentTask?.id?.delete().then((value) {
-  //     emit(DeleteTaskSuccessState());
-  //     getAllTasksFromFireStore();
-  //   }).catchError((error) {
-  //     print(error);
-  //     emit(DeleteTaskErrorState());
-  //     throw error;
-  //   });
-  // }
+  Future<void> updatePatient() async {
+    emit(UpdatePatientLoadingState());
+    setDataFromControllersToFireStore();
+    await currentPatient?.id?.update(currentPatient?.toJson() ?? {}).then((value) {
+      getAllPatientsFromFireStore();
+      emit(UpdatePatientSuccessState());
+    }).catchError((error) {
+      print(error);
+      emit(UpdatePatientErrorState());
+      throw error;
+    });
+  }
+
+  Future<void> deletePatient() async {
+    emit(DeletePatientLoadingState());
+    await currentPatient?.id?.delete().then((value) {
+      getAllPatientsFromFireStore();
+      emit(DeletePatientSuccessState());
+    }).catchError((error) {
+      print(error);
+      emit(DeletePatientErrorState());
+      throw error;
+    });
+  }
 
 }

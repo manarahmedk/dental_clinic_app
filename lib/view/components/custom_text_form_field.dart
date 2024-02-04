@@ -24,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
   Color? cursorColor;
   String? Function(String?)? validator;
   void Function()? onPressed;
+  void Function(String)? onChanged;
 
   CustomTextFormField({
     this.hintText,
@@ -44,6 +45,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onPressed,
     this.textColor,
     this.cursorColor,
+    this.onChanged,
   });
 
   @override
@@ -62,6 +64,7 @@ class CustomTextFormField extends StatelessWidget {
           readOnly: readOnly,
           obscureText: obscureText,
           initialValue: initialValue,
+          onChanged: onChanged,
           style: TextStyle(
             color: textColor ?? AppColors.white,
           ),
