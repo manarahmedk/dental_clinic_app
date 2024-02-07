@@ -1,18 +1,18 @@
 import 'package:booking_calendar/booking_calendar.dart';
+import 'package:dental_clinic_app/view_model/bloc/show_cubit/show_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../view_model/bloc/booking_cubit/booking_cubit.dart';
 import '../../view_model/utils/colors.dart';
 import '../components/custom_text.dart';
 
-class BookingScreen extends StatelessWidget {
-  const BookingScreen({super.key});
+class ShowBookingsScreen extends StatelessWidget {
+  const ShowBookingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var cubit = BookingCubit.get(context);
+    var cubit = ShowCubit.get(context);
     return BlocProvider.value(
-      value: BookingCubit.get(context)..getBookingStreamFirebase,
+      value: ShowCubit.get(context)..getBookingStreamFirebase,
       child: Container(
         height: double.infinity,
         width: double.infinity,
@@ -31,11 +31,11 @@ class BookingScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: const CustomText(text: 'Booking',),
+            title: const CustomText(text: 'Bookings',),
             backgroundColor: AppColors.background,
           ),
           body: SafeArea(
-            child: BlocConsumer<BookingCubit, BookingState>(
+            child: BlocConsumer<ShowCubit, ShowState>(
               listener: (context, state) {
                 // TODO: implement listener
               },
@@ -48,9 +48,6 @@ class BookingScreen extends StatelessWidget {
                   getBookingStream: cubit
                       .getBookingStreamFirebase,
                   uploadBooking: cubit.uploadBookingFirebase,
-                  //pauseSlots: generatePauseSlots(),
-                  //pauseSlotText: 'LUNCH',
-                  //hideBreakTime: false,
                   bookedSlotColor: AppColors.background2,
                   availableSlotColor: AppColors.white,
                   selectedSlotColor: Colors.cyan,
@@ -62,6 +59,7 @@ class BookingScreen extends StatelessWidget {
                   wholeDayIsBookedWidget:
                   const Text('Sorry, for this day everything is booked'),
                   disabledDays: const [5],
+                  hideButton: true,
                 );
               },
             ),

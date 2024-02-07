@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dental_clinic_app/view_model/bloc/booking_cubit/booking_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../model/patient_model.dart';
@@ -33,7 +32,6 @@ class PatientCubit extends Cubit<PatientState> {
 
   void changeIndex(int index) {
     currentIndex = index;
-    setDataFromFirebaseToControllers();
   }
 
 
@@ -56,8 +54,8 @@ class PatientCubit extends Cubit<PatientState> {
         .add(patient.toJson())
         .then((value) {
       print(value);
+      clearAllData();
       emit(AddNewPatientSuccessState());
-      //getAllPatientsFromFireStore();
     }).catchError((error) {
       print(error);
       emit(AddNewPatientErrorState());
@@ -123,6 +121,7 @@ class PatientCubit extends Cubit<PatientState> {
       currentPatient = PatientModel.fromJson(value.data() as Map<String, dynamic>,
           id: value.reference);
       saveData();
+      print(LocalData.get(key: SharedKeys.name));
       emit(SavePatientSuccessState());
     },onError: (error) {
       print(error);

@@ -26,7 +26,7 @@ class CustomTextFormField extends StatelessWidget {
   void Function()? onPressed;
   void Function(String)? onChanged;
 
-  CustomTextFormField({
+  CustomTextFormField({super.key,
     this.hintText,
     this.keyboardType,
     this.controller,
@@ -119,11 +119,17 @@ class CustomTextFormField extends StatelessWidget {
               borderSide: BorderSide(
                 color: AppColors.white,
               ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(30),
+              ),
             ),
             focusedErrorBorder: const OutlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.white,
                 width: 2,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(30),
               ),
             ),
           ),

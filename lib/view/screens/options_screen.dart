@@ -1,28 +1,22 @@
-import 'package:dental_clinic_app/view/screens/login_screen.dart';
-import 'package:dental_clinic_app/view/screens/options_screen.dart';
+import 'package:dental_clinic_app/view/screens/patient_login_screen.dart';
+import 'package:dental_clinic_app/view/screens/show_bookings_screen.dart';
+import 'package:dental_clinic_app/view_model/bloc/show_cubit/show_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../view_model/bloc/auth_cubit/auth_cubit.dart';
-import '../../view_model/data/local/shared_keys.dart';
-import '../../view_model/data/local/shared_prefernce.dart';
 import '../../view_model/utils/colors.dart';
 import '../../view_model/utils/navigation.dart';
 import '../components/custom_button.dart';
 import '../components/custom_text.dart';
 import 'package:flutter/services.dart';
 
-import 'choose_screen.dart';
 
 
-class StartScreen extends StatelessWidget {
-  const StartScreen({super.key});
+class OptionsScreen extends StatelessWidget {
+  const OptionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+    var cubit = ShowCubit.get(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -39,7 +33,7 @@ class StartScreen extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: BlocConsumer<AuthCubit, AuthState>(
+          child: BlocConsumer<ShowCubit, ShowState>(
             listener: (context, state) {},
             builder: (context, state) {
               return ListView(
@@ -69,32 +63,28 @@ class StartScreen extends StatelessWidget {
                   ),
                   const SizedBox(
                     //height: 160,
-                    height: 270,
+                    height: 170,
                   ),
                   CustomButton(
-                    text: 'Get Started',
+                    text: ' See All Bookings ',
                     textColor:  AppColors.background3,
                     backgroundColor: AppColors.background4,
                     onPressed: () {
-                      Navigation.push(context, const OptionsScreen());
+                      cubit.showAll=true;
+                      cubit.getBookingStreamFirebase;
+                      Navigation.push(context, const ShowBookingsScreen());
                     },
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigation.push(context, (LocalData.get(key:SharedKeys.email)!= null ? const ChooseScreen():const LoginScreen()),);
-                        },
-                        child: const CustomText(
-                          text: 'Admin Login',
-                          fontSize: 17,
-                          color: AppColors.background4,
-                        ),
-                      ),
-                    ],
+                  CustomButton(
+                    text: ' See Your Appointment ',
+                    textColor:  AppColors.background3,
+                    backgroundColor: AppColors.background4,
+                    onPressed: () {
+                      cubit.showAll=false;
+                      cubit.getBookingStreamFirebase;
+                      Navigation.push(context, const PatientLoginScreen());
+                    },
                   ),
-
                 ],
               );
             },

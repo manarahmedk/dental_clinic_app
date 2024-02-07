@@ -28,11 +28,12 @@ packages:
   booking_calendar:
     dependency: "direct main"
     description:
-      name: booking_calendar
-      sha256: "6d4197f8f7fd77524ff4168473601d1943a55cbf2af40305b102cfd254595204"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.9"
+      path: "."
+      ref: HEAD
+      resolved-ref: de5d33e3cc03cf402e4d867783c4d2df3ade178b
+      url: "https://github.com/manarahmedk/booking_calendar.git"
+    source: git
+    version: "1.1.10"
   boolean_selector:
     dependency: transitive
     description:
@@ -93,10 +94,10 @@ packages:
     dependency: "direct main"
     description:
       name: cr_calendar
-      sha256: "21ca25a676bfca835f476003726b3748374ea8b36e217d02501407630afc13e5"
+      sha256: "165319b8852d7eaf40a01dc1a2fbf75c809c8877fa6a9f0ccc1fa2a7972f0b1b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0+1"
+    version: "1.2.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -228,18 +229,18 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.1"
   jiffy:
     dependency: transitive
     description:
       name: jiffy
-      sha256: "85172c4fc975a50224521c05bf43abc845288863b19d91bd3c221a96a8785dd3"
+      sha256: cc1d4b75016a9156c29b5d61f0c9176c3e0fb0580cc5a0e0422b5d2cab3fbfff
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0"
+    version: "6.2.1"
   js:
     dependency: transitive
     description:
@@ -465,10 +466,10 @@ packages:
     dependency: transitive
     description:
       name: table_calendar
-      sha256: "7f1270313c0cdb245b583ed8518982c01d4a7e95869b3c30abcbae3b642c45d0"
+      sha256: "1e3521a3e6d3fc7f645a58b135ab663d458ab12504f1ea7f9b4b81d47086c478"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.8"
+    version: "3.0.9"
   term_glyph:
     dependency: transitive
     description:

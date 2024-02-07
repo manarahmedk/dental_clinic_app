@@ -112,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         if (cubit.formKey.currentState!.validate()) {
                           cubit.loginWithFirebase().then((value) {
-                            Navigation.pushAndRemove(context, const ChooseScreen());
+                            Navigation.push(context, const ChooseScreen());
                             cubit.clearData();
                           });
                         }

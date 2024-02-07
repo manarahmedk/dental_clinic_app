@@ -1,4 +1,4 @@
-import 'package:dental_clinic_app/view/screens/search_patient_screen.dart';
+import 'package:dental_clinic_app/view/screens/choose_patient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../view_model/bloc/auth_cubit/auth_cubit.dart';
@@ -9,7 +9,7 @@ import '../components/custom_text.dart';
 import 'package:flutter/services.dart';
 
 
-import 'show_patients_screen.dart';
+import 'show_all_patients_screen.dart';
 
 class ChooseScreen extends StatelessWidget {
   const ChooseScreen({super.key});

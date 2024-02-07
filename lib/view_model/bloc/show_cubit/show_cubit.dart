@@ -1,21 +1,33 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:booking_calendar/booking_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../model/booking_model.dart';
 import '../../data/firebase/firebase.dart';
 import '../../data/local/shared_keys.dart';
 import '../../data/local/shared_prefernce.dart';
 
-part 'booking_state.dart';
+part 'show_state.dart';
 
-class BookingCubit extends Cubit<BookingState> {
-  BookingCubit() : super(BookingInitial());
+class ShowCubit extends Cubit<ShowState> {
+  ShowCubit() : super(ShowInitial());
 
-  static BookingCubit get(context) => BlocProvider.of<BookingCubit>(context);
+  static ShowCubit get(context) => BlocProvider.of<ShowCubit>(context);
+
+  GlobalKey<FormState> formKey4 = GlobalKey<FormState>();
+
+  var phoneController = TextEditingController();
+
+  bool showAll=false;
+
+  void saveData() {
+    LocalData.set(key: SharedKeys.phoneNumber, value: phoneController.text);
+    converted.clear();
+    phoneController.clear();
+  }
 
   final now = DateTime.now();
 
@@ -33,7 +45,7 @@ class BookingCubit extends Cubit<BookingState> {
   List<DateTimeRange> converted = [];
 
   CollectionReference bookings =
-      FirebaseFirestore.instance.collection(FirebaseKeys.bookings);
+  FirebaseFirestore.instance.collection(FirebaseKeys.bookings);
 
   ///This is how can you get the reference to your data from the collection, and serialize the data with the help of the Firestore [withConverter]. This function would be in your repository.
   CollectionReference<BookingModel> getBookingStream() {
@@ -49,21 +61,39 @@ class BookingCubit extends Cubit<BookingState> {
   Stream<List<BookingModel>>? getBookingStreamFirebase(
       {required DateTime end, required DateTime start}) {
     log("called", name: "getBookingStreamFirebase");
-    final stream = getBookingStream()
-        .where('bookingStart', isGreaterThanOrEqualTo: start)
-        .where('bookingStart', isLessThanOrEqualTo: end)
-        .snapshots()
-        .map((snapshot) => snapshot.docs.map((e) => e.data()).toList())
-      ..listen((snapshot) {
-        if (snapshot.isNotEmpty) {
-          log(snapshot.first.serviceName,
-              name: "getBookingStreamFirebase serviceName");
-        }
+    if(showAll==false){
+      final stream = getBookingStream()
+          .where('phoneNumber',isEqualTo: LocalData.get(key:SharedKeys.phoneNumber))
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map((e) => e.data()).toList())
+        ..listen((snapshot) {
+          if (snapshot.isNotEmpty) {
+            log(snapshot.first.serviceName,
+                name: "getBookingStreamFirebase serviceName");
+          }
+        });
+      stream.listen((list) {
+        log(list.length.toString(), name: "getBookingStreamFirebase length");
       });
-    stream.listen((list) {
-      log(list.length.toString(), name: "getBookingStreamFirebase length");
-    });
-    return stream;
+      return stream;
+    }else{
+      final stream = getBookingStream()
+          .where('bookingStart', isGreaterThanOrEqualTo: start)
+          .where('bookingStart', isLessThanOrEqualTo: end)
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map((e) => e.data()).toList())
+        ..listen((snapshot) {
+          if (snapshot.isNotEmpty) {
+            log(snapshot.first.serviceName,
+                name: "getBookingStreamFirebase serviceName");
+          }
+        });
+      stream.listen((list) {
+        log(list.length.toString(), name: "getBookingStreamFirebase length");
+      });
+      return stream;
+    }
+
   }
 
   ///After you fetched the data from firestore, we only need to have a list of datetimes from the bookings:
@@ -87,27 +117,16 @@ class BookingCubit extends Cubit<BookingState> {
   ///This is how you upload data to Firestore
   Future<dynamic> uploadBookingFirebase(
       {required BookingService newBooking}) async {
-    emit(UploadBookingLoadingState());
-    newBooking.userName= LocalData.get(key: SharedKeys.name);
-    newBooking.userPhoneNumber= LocalData.get(key: SharedKeys.phoneNumber);
-
-    await bookings.add(newBooking.toModel.toJson()).then((value) {
-      print("Booking Added");
-      emit(UploadBookingSuccessState());
-    }).catchError((error) {
-      print("Failed to add booking: $error");
-      emit(UploadBookingErrorState());
-    });
   }
 }
 
 extension Mapper on BookingService {
   BookingModel get toModel => BookingModel(
-        bookingStart: bookingStart,
-        bookingEnd: bookingEnd,
-        serviceName: serviceName,
-        serviceDuration: serviceDuration,
-        userName: userName,
-        phoneNumber: userPhoneNumber,
-      );
+    bookingStart: bookingStart,
+    bookingEnd: bookingEnd,
+    serviceName: serviceName,
+    serviceDuration: serviceDuration,
+    userName: userName,
+    phoneNumber: userPhoneNumber,
+  );
 }

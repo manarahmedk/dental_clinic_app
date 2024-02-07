@@ -1,4 +1,4 @@
-import 'package:dental_clinic_app/view/screens/booking_screen.dart';
+import 'package:dental_clinic_app/view/screens/edit_patient_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../view_model/bloc/patient_cubit/patient_cubit.dart';
@@ -7,10 +7,12 @@ import '../../view_model/utils/navigation.dart';
 import '../components/custom_text.dart';
 import '../components/custom_text_form_field.dart';
 import '../components/patient_builder.dart';
+import 'add_patient_screen.dart';
 
 
-class SearchPatientScreen extends StatelessWidget {
-  const SearchPatientScreen({super.key});
+class ShowPatientsScreen extends StatelessWidget {
+  const ShowPatientsScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class SearchPatientScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: AppColors.background2,
             title: const CustomText(
-              text: 'Choose Patient',
+              text: 'Patients',
             ),
           ),
           body: BlocConsumer<PatientCubit, PatientState>(
@@ -83,13 +85,10 @@ class SearchPatientScreen extends StatelessWidget {
                               patientModel: cubit.patients[index],
                               onTap: () {
                                 cubit.changeIndex(index);
-                                cubit.savePatientDataFromFireStore().then((value) {
+                                cubit.getPatientDataFromFireStore().then((value) {
                                   Navigation.push(
                                     context,
-                                    // EditTaskScreen(
-                                    //   taskModel: cubit.tasksFire[index],
-                                    // ),
-                                    const BookingScreen(),
+                                    const EditPatientScreen(),
                                   );
                                 });
                               },
@@ -103,6 +102,15 @@ class SearchPatientScreen extends StatelessWidget {
                 ),
               );
             },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigation.push(context, const AddPatientScreen());
+            },
+            backgroundColor: AppColors.background3,
+            child: const Icon(
+              Icons.add,
+            ),
           ),
         ),
       ),

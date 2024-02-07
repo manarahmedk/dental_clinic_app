@@ -3,6 +3,7 @@ import 'package:dental_clinic_app/view_model/bloc/auth_cubit/auth_cubit.dart';
 import 'package:dental_clinic_app/view_model/bloc/booking_cubit/booking_cubit.dart';
 import 'package:dental_clinic_app/view_model/bloc/observer.dart';
 import 'package:dental_clinic_app/view_model/bloc/patient_cubit/patient_cubit.dart';
+import 'package:dental_clinic_app/view_model/bloc/show_cubit/show_cubit.dart';
 import 'package:dental_clinic_app/view_model/data/local/shared_prefernce.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer=MyBlocObserver();
   await LocalData.init();
-  //LocalData.clearData();
+  LocalData.clearData();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context)=>AuthCubit(),),
         BlocProvider(create: (context)=>PatientCubit(),),
         BlocProvider(create: (context)=>BookingCubit(),),
+        BlocProvider(create: (context)=>ShowCubit(),),
       ],
       child: const MaterialApp(
         title: 'denatal_clinic_app',
