@@ -49,6 +49,7 @@ class BookingCubit extends Cubit<BookingState> {
   Stream<List<BookingModel>>? getBookingStreamFirebase(
       {required DateTime end, required DateTime start}) {
     log("called", name: "getBookingStreamFirebase");
+    converted.clear();
     final stream = getBookingStream()
         .where('bookingStart', isGreaterThanOrEqualTo: start)
         .where('bookingStart', isLessThanOrEqualTo: end)
@@ -90,7 +91,6 @@ class BookingCubit extends Cubit<BookingState> {
     emit(UploadBookingLoadingState());
     newBooking.userName= LocalData.get(key: SharedKeys.name);
     newBooking.userPhoneNumber= LocalData.get(key: SharedKeys.phoneNumber);
-
     await bookings.add(newBooking.toModel.toJson()).then((value) {
       print("Booking Added");
       emit(UploadBookingSuccessState());
