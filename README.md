@@ -12,5 +12,4 @@ Entering patients data, organizing and booking appointments for patients at the 
 🔶 shared preference Local Storage 
 
 
-- [github](https://github.com/manarahmedk/dental_clinic_app)
 
