@@ -1,16 +1,11 @@
 # dental_clinic_app
 
-A new Flutter project.
+Entering patients data, organizing and booking appointments for patients at the dental clinic. The patient can see the reserved appointments and available appointments before he calls in order to book the appointment that suits him. He can also enter his phone number and review the appointment he has booked through it.
+ key features:
+🔶 firebase (FireAuth-FireStore)
+🔶 MVVM Architecture
+🔶 Cubit State Management
+🔶 shared preference Local Storage 
 
-## Getting Started
+- [github](https://github.com/manarahmedk/dental_clinic_app)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
